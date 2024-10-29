@@ -21,8 +21,10 @@ MIN_INT == -2^(INT_WIDTH - 1)
 
 VARIABLES
     \* lower bound of search interval (incl)
+    \* @type: Int;
     low,
     \* upper bound of search interval (incl)
+    \* @type: Int;
     high,
     \* terminated?
     \* @type: Bool;
@@ -46,5 +48,7 @@ Next ==
             /\ isTerminated' = TRUE
             /\ returnValue' = -(low + 1)
             /\ UNCHANGED <<low, high>>
+    ELSE
+        UNCHANGED <<low, high, isTerminated, returnValue>>
 
 ====
