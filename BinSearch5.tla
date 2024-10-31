@@ -1,8 +1,8 @@
 ---- MODULE BinSearch5 ----
 EXTENDS Integers, Sequences, Apalache
 
-\* run with symbolic inputs:
-\* apalache-mc check --cinit=ConstInit --inv=Postcondition MC5_8.tla
+\* run with symbolic inputs and stronger postcondition:
+\* apalache-mc check --cinit=ConstInit --inv=PostconditionSorted MC5_8.tla
 
 CONSTANTS
     \* the input sequence
@@ -65,6 +65,13 @@ Next ==
     ELSE
         UNCHANGED <<low, high, isTerminated, returnValue>>
 
+InputIsSorted ==
+    \* specify that the input list is sorted, but not in the "most
+    \* straightforward way" because that way would use two quantifiers
+    \A i \in DOMAIN INPUT_SEQ:
+        i + 1 \in DOMAIN INPUT_SEQ =>
+            INPUT_SEQ[i] <= INPUT_SEQ[i + 1]
+
 \* relates input sequence to return value according to the java
 \* spec for the binary search function
 \* "guarantees that the return value will be >= 0 iff key is found"
@@ -79,5 +86,8 @@ ReturnValueIsCorrect ==
 
 Postcondition ==
     isTerminated => ReturnValueIsCorrect
+
+PostconditionSorted ==
+    isTerminated => (~InputIsSorted \/ ReturnValueIsCorrect)
 
 ====
