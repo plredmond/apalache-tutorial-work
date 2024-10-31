@@ -99,13 +99,8 @@ PostconditionSorted ==
 Termination ==
     (nSteps >= INT_WIDTH) => isTerminated
 
-\* Helpful footnote from the tutorial:
-\* > Instead of checking whether INPUT_SEQ is sorted in the post-condition, we
-\* > could restrict the constant INPUT_SEQ to be sorted in every execution. That
-\* > would effectively move this constraint into the pre-condition of the
-\* > search. Had we done that, we would not be able to observe the behavior of
-\* > the search on the unsorted inputs. An important property is whether the
-\* > search is terminating on all inputs.
+Progress ==
+    ~isTerminated' => (low < low' \/ high' < high)
 
 
 ====
